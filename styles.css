@@ -1,0 +1,169 @@
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Nanum Myeongjo', serif;
+  color: #333;
+}
+body{
+  background-color: white;
+}
+.wrapper{
+  max-width: 1400px;
+  margin: auto;
+}
+header{
+  text-align: center;
+  background: rgba(248, 194, 145,0.4);
+}
+header h1{
+  padding: 30px;
+  text-transform: lowercase;
+  letter-spacing: 0.1em;
+  font-weight: 400;
+  font-family: 'Nanum Myeongjo', serif;
+}
+header h1 span{
+  text-transform: capitalize;
+  font-family: 'Parisienne', cursive;
+  font-size: 45px;
+}
+.flex-container{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* Nav styles */
+nav{
+  justify-content: center;
+  background: rgba(248, 194, 145,0.5);
+  box-shadow: -0.1px 0 4px rgb(128, 128, 128);
+}
+nav li{
+  list-style-type: none;
+  padding:20px;
+}
+nav a{
+  text-decoration: none;
+  text-transform: capitalize;
+  letter-spacing: 0.1em;
+  color: #555;
+}
+
+/* Aside styles */
+.aside{
+  width: 300px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: small;
+}
+.aside .img-nous{
+  width: 200px;
+  height: 266px;
+  background: url("img/nous/nous2-4.jpeg") no-repeat;
+  background-size: cover;
+  margin: 40px;
+  box-shadow: 0.5px 0.5px 4px #555;
+  animation: changeImg 120s steps(1, end) infinite;
+}
+@keyframes changeImg {
+  /* 0% {transition: background 1s;background: url("img/nous/nous2-4.jpeg") no-repeat;background-size: cover;} */
+  50% {transition: background 1s;background: url("img/nous/nous2-2.jpeg") no-repeat;background-size: cover;}
+}
+.asidec{
+  margin: 20px auto;
+  padding: 10px;
+  background: rgba(248, 194, 145,0.4);
+  box-shadow: 0.5px 0.5px 4px rgb(148, 148, 148);
+  font-weight: 500;
+}
+.title{
+  margin: 10px;
+  padding: 10px;
+  padding-bottom: 20px;
+  text-align: center;
+}
+.title b{
+  font-size: 18px;
+}
+.weather img{
+  opacity:0.6;
+  width: 90px;
+  height: 90px;
+  background: rgba(248, 194, 145,0.7);;
+  border-radius: 50%;
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+.weather-content{
+  margin: auto;
+}
+.weather-content div{
+  padding-bottom: 5px;
+}
+
+/* Video styles */
+.video{
+  margin: 40px auto;
+  width: 60%;
+  max-width: 700px;
+  height: 550px;
+  cursor: pointer;
+}
+.video-content{
+  padding: 15px;
+}
+.video-content h1{
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+iframe{
+  border: none;
+  width:100%;
+  height: 350px;
+}
+.icons{
+  padding:10px 5px;
+}
+.icon{
+  text-decoration: none;
+  color: rgb(51, 51, 51);
+  font-size: 22px;
+  margin: 0 10px;
+}
+.icon:hover{
+  color: rgba(248, 194, 145,0.6);
+}
+
+/* Media QUERIES */
+@media screen and (max-width: 850px) {
+  .aside{
+    width: 100vw;
+    height: 450px;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .aside .img-nous{
+    order:2;
+    margin: 5px 20px;
+  }
+  .title{
+    order:1;
+    width: 100vw;
+    padding-top: 20px;
+  }
+  .aside-content{
+    margin: 5px 20px;
+    order:2;
+  }
+  .video{
+   width: 90vw;
+  }
+
+}
