@@ -18,7 +18,47 @@
     <li><a href="#">Home</a></li>
     <li><a href="#">Destinations</a></li>
     <li><a href="#">Chatroom</a></li>
+    <li id="login"><a href="modal-loging" class="icon fa fa-user"><span id="tooltip">login</span></a></li>
   </nav>
+
+  <div id="modal-login">
+
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <h1 class="modal-welcome">Bonjour et bienvenue !</h1>
+
+      <ul>
+        <li>
+          <div class="collapse-header form-login" id="new-account-form">
+            <h1 class="collapsible-header">Nouveau profil</h1>
+          </div>
+          <div class="collapse-body">
+            <form action="/action_page.php" class="form-container">
+              <input type="text" placeholder="Identifiant" name="user" required>
+              <input type="password" placeholder="Mot de passe" name="psw" required>
+              <button type="submit" class="btn">Créer !</button>
+            </form>
+          </div>
+        </li>
+        <li>
+          <div class="collapse-header form-login" id="login-form">
+            <h1 class="collapsible-header">Se connecter</h1>
+          </div>
+          <div class="collapse-body">
+            <form action="/action_page.php" class="form-container">
+              <input type="text" placeholder="Identifiant" name="user" required>
+              <input type="password" placeholder="Mot de passe" name="psw" required>
+              <button type="submit" class="btn">Go !</button>
+            </form>
+          </div>
+
+
+        </li>
+      </ul>
+    
+    </div>
+
+  </div>
 
   <div class="wrapper">
     
