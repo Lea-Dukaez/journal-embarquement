@@ -42,3 +42,19 @@ getWeather().then(data => {
   updateWeather(weatherIcon,weatherText, temp);
 
 }).catch(err => console.log(err));
+
+
+// Modal-login - accordion
+const collapseHeader = document.querySelectorAll(".collapse-header");
+
+collapseHeader.forEach(header => {
+  header.addEventListener("click", () =>{
+    header.classList.toggle("active");
+    const collapseBody = header.nextElementSibling;
+    if (collapseBody.style.maxHeight) {
+      collapseBody.style.maxHeight = null;
+    } else {
+      collapseBody.style.maxHeight = collapseBody.scrollHeight + "px";
+    } 
+  });
+});
