@@ -5,13 +5,10 @@ const weatherAside = document.querySelector(".weather");
 // affichage heure
 const updateTime = () => {
   const now = new Date();
-  const h = now.getHours();
-  const m = now.getMinutes();
-  const s = now.getSeconds();
-  const html = `<span>${h} : ${m} : ${s}</span>`;
+  const options = {hour: "2-digit", minute: "2-digit", second: "2-digit", timeZone:"Asia/Taipei"};
+  const nowTaiwan = now.toLocaleString("en-GB", options);
+  const html = `<span>${nowTaiwan}</span>`;
 
-  // const time = now.toTimeString();
-  // const htmldeux = `<span>${time}</span>`;
   clock.innerHTML = html;
 };
 
@@ -45,3 +42,5 @@ getWeather().then(data => {
   updateWeather(weatherIcon,weatherText, temp);
 
 }).catch(err => console.log(err));
+
+
