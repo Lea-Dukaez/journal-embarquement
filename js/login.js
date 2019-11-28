@@ -29,7 +29,7 @@ collapseHeader.forEach((header,index) => {
 // close modal
 // When the user clicks the button
 const modal = document.querySelector('#modal-login');
-const iconLogin = document.querySelector('#login');
+const iconLogin = document.querySelector('.login');
 iconLogin.onclick = () => {
   modal.style.display = "block";
 }

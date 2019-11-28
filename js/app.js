@@ -44,3 +44,17 @@ getWeather().then(data => {
 }).catch(err => console.log(err));
 
 
+// side nav
+const openSideNav = (element) => {
+  element.classList.toggle("change");
+  const sideNavMobile = document.getElementById("mySidenav");
+
+  if(sideNavMobile.style.width === "100%"){
+    sideNavMobile.style.width = "0";
+    element.style.left = "28px";
+  } else {
+    element.style.left = "93%";
+    element.style.zIndex = "999";
+    sideNavMobile.style.width = "100%";
+  }
+}

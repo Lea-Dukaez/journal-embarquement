@@ -11,19 +11,36 @@
 
 
   <header>
+    <div class="side-nav-burger" onclick="openSideNav(this)">
+      <div class="bar1"></div>
+      <div class="bar2"></div>
+      <div class="bar3"></div>
+    </div>
     <h1><span>Journal</span> d'embarquement</h1>
   </header>
 
   <!-- Nav bar -->
   <nav class="flex-container">
+      <ul class="nav-bar">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Destinations</a></li>
+        <li><a href="#">Chatroom</a></li>
+        <li class="login" id="login"><a href="#" class="fa fa-user"><span id="tooltip">login</span></a></li>
+        <li class="account" id="account"><a href="#">Identifiant</a></li>
+        <li class="log-out" id="log-out"><a href="#" class="fas fa-power-off"><span id="tooltip">logout</span></a></li>  
+      </ul>
+  </nav>
+
+  <div class="side-nav" id="mySidenav">
+    <ul>
       <li><a href="#">Home</a></li>
       <li><a href="#">Destinations</a></li>
       <li><a href="#">Chatroom</a></li>
-      <li id="login"><a href="#" class="icon fa fa-user"><span id="tooltip">login</span></a></li>
-      <li id="account"><a href="#">Identifiant</a></li>
-      <li id="log-out"><a href="#" class="fas fa-power-off"><span id="tooltip">logout</span></a></li>  
-  </nav>
-
+      <li class="login" id="login-sidenav"><a href="#" class="fa fa-user"><span id="tooltip">login</span></a></li>
+      <li class="account" id="account-sidenav"><a href="#">Identifiant</a></li>
+      <li class="log-out" id="log-out-sidenav"><a href="#" class="fas fa-power-off"><span id="tooltip">logout</span></a></li>  
+    </ul>
+  </div>
 
 
   <!-- Main content -->

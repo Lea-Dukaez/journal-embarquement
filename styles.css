@@ -14,11 +14,12 @@ body{
   margin: auto;
 }
 header{
+  position: relative;
   text-align: center;
-  background: rgba(248, 194, 145,0.4);
+  /* background: rgba(248, 194, 145,0.4); */
 }
 header h1{
-  padding: 25px;
+  padding: 15px;
   text-transform: lowercase;
   letter-spacing: 0.1em;
   font-weight: 400;
@@ -39,40 +40,45 @@ header h1 span{
 nav{
   position: relative;
   justify-content: center;
-  border-top: 1px solid rgba(51, 51, 51, 0.2);
-  background: rgba(248, 194, 145,0.4);
+  margin-bottom: 10px;
+  background-image: linear-gradient(to right, rgba(255,255,255,0), rgba(248, 194, 145,0.3), rgba(255,255,255,0));
+  /* background: rgba(248, 194, 145,0.2); */
 }
 nav li{
+  display: inline-block;
   list-style-type: none;
-  padding:10px;
+  padding: 5px 10px;
   font-size: 14px;
 }
 nav a{
   text-decoration: none;
   text-transform: capitalize;
   letter-spacing: 0.1em;
-  color: #555;
+  color: rgb(85, 85, 85);
 }
 #login{
-  display: inline;
+  display: block;
   position: absolute;
   right: 10px;
-  top: 3px;
+  top: -70px;
   margin: 0;
   padding: 0;
+  /* background-image: radial-gradient(circle,rgba(248, 194, 145,0.3),white); */
+  /* background:rgba(248, 194, 145,0.3); */
+  border-radius: 50%;
 }
 #login a{
   position: relative;
   padding: 7px;
   padding-right: 5px;
-  color:rgba(51, 51, 51 ,0.6);
+  color:rgba(51,51,51,0.4);
   font-size: 17px;
 }
 #log-out{
   display: none;  /* inline */
   position: absolute;
   right: 10px;
-  top: 5px;
+  top: -72px;
   margin: 0;
   padding: 0;
 }
@@ -81,14 +87,16 @@ nav a{
   padding: 7px;
   padding-right: 5px;
   color:rgba(51, 51, 51 ,0.6);
+  font-size: 13px;
 }
 #account{
   display: none;  /* inline */
   position: absolute;
-  right: 50px;
-  top: 10px;
+  right: 40px;
+  top: -65px;
   margin: 0;
   padding: 0;
+  font-size: 11px;
 }
 #tooltip{
   position: absolute;
@@ -109,6 +117,58 @@ nav a{
 #login a:hover #tooltip, #log-out a:hover #tooltip{
   visibility: visible;
   opacity: 1;
+}
+
+
+/* side-nav menu */
+.side-nav-burger{
+  display: none;
+}
+.side-nav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: rgb(247, 212, 181);
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+.side-nav ul{
+  text-align: center;
+}
+.side-nav a {
+  padding: 8px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+.side-nav a:hover {
+  color: #f1f1f1;
+}
+#login-sidenav{
+  display: block;
+  margin-top: 50px;
+}
+#login-sidenav a{
+  font-size: 18px;
+}
+#account-sidenav{
+  display: none; /* block */
+  margin-top: 50px;
+}
+#log-out-sidenav{
+  display: none; /* block */
+}
+#account-sidenav a{
+  font-size: 16px;
+}
+#log-out-sidenav a{
+  font-size: 14px;
 }
 
 /* Modal */
@@ -372,6 +432,41 @@ footer p{
 /* Media QUERIES */
 
 @media screen and (max-width: 970px){
+  .nav-bar{
+    display: none;
+  }
+  .side-nav-burger{
+    display: inline-block;
+    cursor: pointer;
+    position: absolute;
+    top: 30px;
+    left: 28px;
+    -webkit-transition: left 0.4s ease-out; /* Safari prior 6.1 */
+    transition: left 0.4s ease-out;
+  }
+  .bar1, .bar2, .bar3 {
+    width: 20px;
+    height: 3px;
+    background-color:rgba(85, 85, 85, 0.9);
+    margin: 2px 0;
+    transition: 0.4s;
+  }
+  .change .bar1 {
+    -webkit-transform: rotate(-45deg) translate(-9px, 6px);
+    transform: rotate(-45deg) translate(-3px, 4px);
+  }
+  .change .bar2 {opacity: 0;}
+  .change .bar3 {
+    -webkit-transform: rotate(45deg) translate(-8px, -8px);
+    transform: rotate(45deg) translate(-3px, -4px);
+  }
+  .side-nav-burger:hover .bar1, .side-nav-burger:hover .bar2, .side-nav-burger:hover .bar3{
+    background-color: rgb(51, 51, 51);
+  }
+  .change.side-nav-burger:hover .bar1, .change.side-nav-burger:hover .bar3{
+    background-color: #f1f1f1;
+  }
+
   #modal-login{
     padding-top: 50px;
   }
@@ -415,20 +510,19 @@ footer p{
 @media screen and (max-width: 510px){
   header h1{
     font-size: 20px;
-    padding: 15px;
+    padding: 15px 50px;
   }
   header h1 span{
     font-size: 28px;
   }
-  nav li{
-    padding:8px;
-    font-size: 11px;
+  .side-nav-burger{
+    top: 20px;
   }
-  #tooltip{
+  /* #tooltip{
     top: 30px;
     padding: 4px 5px 3px 5px;
     font-size: 10px;
-  }
+  } */
   #modal-login{
     width: 100vw;
     height: 100vh;
