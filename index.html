@@ -58,10 +58,10 @@
             <h1>Nouveau profil</h1>
           </div>
           <div class="collapse-body new-account">
-            <form action="/action_page.php" class="form-container" id="new-account-form">
-              <input type="text" placeholder="Identifiant" name="new-user" required>
-              <input type="password" placeholder="Mot de passe" name="new-psw" required><span class="info fas fa-info-circle"><span class="tooltip-info">Au moins 6 caractères dont un chiffre, une majuscule et une minuscule</span></span>
-              <button type="submit" class="btn">Créer !</button>
+            <form class="form-container" id="signup-form">
+              <input type="email" placeholder="Email" name="newemail" required>
+              <input class="new-psw" type="password" placeholder="Mot de passe" name="newpsw" required><span class="info fas fa-info-circle"><span class="tooltip-info">Au moins 6 caractères dont un chiffre, une majuscule et une minuscule</span></span>
+              <button type="button" class="btn" id="signupbtn">Créer !</button>
             </form>
           </div>
         </li>
@@ -70,11 +70,12 @@
             <h1>Se connecter</h1>
           </div>
           <div class="collapse-body login">
-            <form action="/action_page.php" class="form-container" id="login-form">
-              <input type="text" placeholder="Identifiant" name="user" required>
+            <form class="form-container" id="login-form">
+              <input type="email" placeholder="Email" name="email" required>
               <input type="password" placeholder="Mot de passe" name="psw" required>
+              <span class="error">Email ou mot de passe invalide</span>
               <span class="psw-forget">Mot de passe oublié ?</span>
-              <button type="submit" class="btn">Go !</button>
+              <button type="button" class="btn" id="loginbtn">Go !</button>
             </form>
           </div>
         </li>
@@ -141,23 +142,6 @@
   <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-analytics.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-firestore.js"></script>
-  <script>
-    // Your web app's Firebase configuration
-    var firebaseConfig = {
-      apiKey: "AIzaSyDaV1_deg05sDQgZRwqIuKRsLICW7ptf5E",
-      authDomain: "taiwan-blog-e2ac1.firebaseapp.com",
-      databaseURL: "https://taiwan-blog-e2ac1.firebaseio.com",
-      projectId: "taiwan-blog-e2ac1",
-      storageBucket: "taiwan-blog-e2ac1.appspot.com",
-      messagingSenderId: "254095991684",
-      appId: "1:254095991684:web:376224c1ecaec75d6133d1",
-      measurementId: "G-VGCLK8X0DF"
-    };
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    firebase.analytics();
-    const fbAuth = firebase.auth();
-  </script>
   <script src="https://kit.fontawesome.com/09376d0a06.js" crossorigin="anonymous"></script>
   <script src="js/weather.js"></script>
   <script src="js/login.js"></script>

@@ -175,7 +175,7 @@ nav a{
 #modal-login{
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
+  z-index: 2; /*Sit on top */
   padding-top: 100px; /* Location of the box */
   left: 0;
   top: 0;
@@ -256,7 +256,7 @@ nav a{
 .info{
   color: rgba(248, 194, 145,0.6);
   position: absolute;
-  top: 103px;
+  top: 105px;
   right: 45px;
 }
 .info:hover{
@@ -295,6 +295,14 @@ nav a{
 .collapse-body button:focus {
   cursor: pointer;
 }
+.error{
+  display: none; /* block */
+  padding-bottom: 15px;
+  font-size: 12px;
+  color: red;
+}
+
+
 .psw-forget{
   position: absolute;
   bottom: 10px;
@@ -506,23 +514,26 @@ footer p{
   .info{
     right: 28px;
   }
+  header h1{
+    padding: 15px 20px 15px 25px;
+    font-size: 25px;
+  }
+  header h1 span{
+    font-size: 33px;
+  }
 }
+
 @media screen and (max-width: 510px){
   header h1{
+    padding: 15px 35px 15px 65px;
     font-size: 20px;
-    padding: 15px 50px;
   }
   header h1 span{
     font-size: 28px;
   }
   .side-nav-burger{
-    top: 20px;
+    top: 25px;
   }
-  /* #tooltip{
-    top: 30px;
-    padding: 4px 5px 3px 5px;
-    font-size: 10px;
-  } */
   #modal-login{
     width: 100vw;
     height: 100vh;
@@ -596,6 +607,16 @@ footer p{
   }
   footer p{
     font-size: 10px;
+  }
+}
+
+@media screen and (max-width: 377px){
+  header h1{
+    padding: 15px 35px 15px 65px;
+    font-size: 20px;
+  }
+  .side-nav-burger{
+    top: 37px;
   }
 }
 
