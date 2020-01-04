@@ -1,23 +1,6 @@
-// Your web app's Firebase configuration
-var firebaseConfig = {
-  apiKey: "AIzaSyDaV1_deg05sDQgZRwqIuKRsLICW7ptf5E",
-  authDomain: "taiwan-blog-e2ac1.firebaseapp.com",
-  databaseURL: "https://taiwan-blog-e2ac1.firebaseio.com",
-  projectId: "taiwan-blog-e2ac1",
-  storageBucket: "taiwan-blog-e2ac1.appspot.com",
-  messagingSenderId: "254095991684",
-  appId: "1:254095991684:web:376224c1ecaec75d6133d1",
-  measurementId: "G-VGCLK8X0DF"
-};
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-firebase.analytics();
-const auth = firebase.auth();
-
-
-
 // const 
 const modal = document.querySelector('#modal-login');
+const modalContent = document.querySelector('.modal-content');
 const closeModal = document.querySelector('.close-modal');
 const iconsLogin = document.querySelectorAll('.login');
 const iconsLogout = document.querySelectorAll('.log-out');
@@ -29,6 +12,7 @@ const inputs = document.querySelectorAll(".collapse-body input");
 const newAccountPsw = document.querySelector('.new-psw');
 const btnSignup = document.getElementById("signupbtn");
 const btnLogin = document.getElementById("loginbtn");
+const forgetPsw = document.querySelector('.psw-forget');
 
 const sideNavBurger = document.querySelector('.side-nav-burger');
 
@@ -46,7 +30,6 @@ iconsLogin.forEach(icon => {
 closeModal.onclick = () => {
   modal.style.display = "none";
   sideNavBurger.style.display = "inline-block";
-  newAccountPsw.style.borderColor = "initial";
   collapseHeader.forEach(header => {
     if(header.classList.contains("active")){
       header.classList.toggle("active");
@@ -57,11 +40,10 @@ closeModal.onclick = () => {
 }
 
 // When the user clicks anywhere outside of the modal, close it
-window.onclick = (event) => {
-  if (event.target === modal) {
+window.onmousedown = (event) => {
+  if ((event.target === modal)) {
     modal.style.display = "none";
     sideNavBurger.style.display = "inline-block";
-    newAccountPsw.style.borderColor = "initial";
     collapseHeader.forEach(header => {
       if(header.classList.contains("active")){
         header.classList.toggle("active");
@@ -71,6 +53,7 @@ window.onclick = (event) => {
     });
   }
 }
+
 
 // Modal-login - accordion
 collapseHeader.forEach((header,index) => {
@@ -102,54 +85,120 @@ collapseHeader.forEach((header,index) => {
 
 
 
-// Form sign in / sign up
-// Sign Up
+// Form sign in / sign up : 
+// Snackbar welcome login msg
+const showLoginMsg = (userName) => {
+  // Get the snackbar DIV
+  const snackbarLogin = document.getElementById("snackbarLogin");
+  // Add the "show" class to DIV
+  snackbarLogin.innerHTML = `Bienvenue ${userName} !`;
+  snackbarLogin.classList.toggle("show");
+  // After 3 seconds, remove the show class from DIV
+  setTimeout(() => { 
+    snackbarLogin.classList.toggle("show"); 
+  }, 3000);
+};
+
+// Error Msg sign in / sign up
+const errorMsg = (msg, form) => {
+  // Add the "show" class to DIV
+  form.innerHTML = `${msg}`;
+  form.classList.toggle("showMsg");
+
+  // After 3 seconds, remove the show class from span
+  setTimeout(() => { 
+    form.classList.toggle("showMsg"); 
+  }, 3000);
+};
+
+
+// Sign Up form + authentification
 btnSignup.addEventListener('click', () => {
+
+  newUserName = document.querySelector("input[name='username']").value;
   newUserEmail = document.querySelector("input[name='newemail']").value;
   newUserPsw = document.querySelector("input[name='newpsw']").value;
+  signupErrorMsg = document.querySelector("#signuperr");
+  collapseBody = signupErrorMsg.parentNode.parentNode;
 
-  const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/ ;
-  if(regex.test(newUserPsw)){
+  const regexpsw = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/ ;
+  if(regexpsw.test(newUserPsw)){
     auth.createUserWithEmailAndPassword(newUserEmail, newUserPsw)
       .then(() => {
-        newAccountPsw.style.borderColor = "initial";
+        // update user name
+        const user = firebase.auth().currentUser;
+        user.updateProfile({ displayName: `${newUserName}`});
+        // reset form and close modal
         btnSignup.parentNode.reset();
         btnSignup.parentNode.parentNode.style.maxHeight = null;
         modal.style.display = "none";
         sideNavBurger.style.display = "inline-block";
-        console.log('user created')
+
+        // display userName + custom msg
+        accountsUser.forEach(name => {
+          name.innerHTML = newUserName;
+        })
+        showLoginMsg(newUserName);
       })
-      .catch(err => console.log(err.message));
+      .catch(err => {
+        console.log(err.message);
+        if(err.code === "auth/email-already-in-use"){
+          const errMsg = "Email déjà utilisé";
+          errorMsg(errMsg, signupErrorMsg)
+          collapseBody.style.maxHeight = collapseBody.scrollHeight + "px";
+        } else if(err.code === "auth/invalid-email"){
+          const errMsg = "Email invalide";
+          errorMsg(errMsg, signupErrorMsg);
+          collapseBody.style.maxHeight = collapseBody.scrollHeight + "px";
+        }
+      });
   } else {
-    console.log('invalid password')
-    newAccountPsw.style.borderColor = "red"; 
+    console.log('invalid password');
+    const errMsg = "Le mot de passe doit contenir au moins 6 caractères dont un chiffre, une majuscule et une minuscule";
+    errorMsg(errMsg, signupErrorMsg)
+    collapseBody.style.maxHeight = collapseBody.scrollHeight + "px";
   }
-
-
 });
 
 
-// Sign In
+// Sign in form + authentification
 btnLogin.addEventListener('click',() => {
 
   userEmail = document.querySelector("input[name='email']").value;
   userPsw = document.querySelector("input[name='psw']").value;
-  errorMsg = document.querySelector(".error");
+  signinErrorMsg = document.querySelector("#signinerr");
+  collapseBody = signinErrorMsg.parentNode.parentNode;
 
   auth.signInWithEmailAndPassword(userEmail,userPsw)
     .then( () => {
+      // reset form and close modal
       btnLogin.parentNode.reset();
       btnLogin.parentNode.parentNode.style.maxHeight = null;
       modal.style.display = "none";
       sideNavBurger.style.display = "inline-block";
-      errorMsg.style.display = "none";
       console.log('user logged in');
     })
     .catch(err => {
       console.log(err.message);
-      errorMsg.style.display = "block";
+      const errMsg = "Email ou mot de passe invalide";
+      errorMsg(errMsg, signinErrorMsg);
+      collapseBody.style.maxHeight = collapseBody.scrollHeight + "px";
     });
 });
+
+// Inputs => Trigger the click on submit Button on "Enter"
+inputs.forEach(input => {
+  input.addEventListener("keyup", e => {
+    if(e.keyCode === 13){
+      if(input.parentNode.id === 'signup-form'){
+        btnSignup.click();
+      } else if(input.parentNode.id === 'login-form'){
+        btnLogin.click();
+      }
+    }
+  });
+});
+
 
 // log out users
 iconsLogout.forEach(icon => {
@@ -158,27 +207,53 @@ iconsLogout.forEach(icon => {
   });
 });
 
+// Password forgotten / reset
+// forgetPsw.addEventListener('click', () => {
+//   console.log('hello');
+
+// })
+// var auth = firebase.auth();
+// var emailAddress = "user@example.com";
+
+// auth.sendPasswordResetEmail(emailAddress)
+// .then(function() {
+//   // Email sent.
+// }).catch(function(error) {
+//   // An error happened.
+// });
+
 
 // Add a realtime listener
 auth.onAuthStateChanged(firebaseUser => {
   if(firebaseUser){
-    iconsLogout.forEach(icon => {
-      icon.style.display = "inline-block";
-    });
+    // avoid over-writing of username by null when user created + login first time
+    if(firebaseUser.displayName){
+      const userName = firebaseUser.displayName;
+      accountsUser.forEach(acc => {
+        acc.innerHTML = userName;
+      });
+      showLoginMsg(userName);
+    }
     accountsUser.forEach(acc => {
       acc.style.display = "inline-block";
     });
+    // logout icon  visible when login
+    iconsLogout.forEach(icon => {
+      icon.style.display = "inline-block";
+    });
+    // login icon not visible when already login
     iconsLogin.forEach(icon => {
       icon.style.display = "none";
     });
-    console.log(firebaseUser);
   }else{
+    // logout icon & account name not visible when not login
     iconsLogout.forEach(icon => {
       icon.style.display = "none";
     });
     accountsUser.forEach(acc => {
       acc.style.display = "none";
     });
+    // login icon nt visible when not login
     iconsLogin.forEach(icon => {
       icon.style.display = "block";
     });

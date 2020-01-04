@@ -3,7 +3,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link href="https://fonts.googleapis.com/css?family=Nanum+Myeongjo|Parisienne&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Nanum+Myeongjo:400,700,800|Parisienne&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <title>杜莉亞 - 高來福 - blog</title>
 </head>
@@ -22,11 +22,11 @@
   <!-- Nav bar -->
   <nav class="flex-container">
       <ul class="nav-bar">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Destinations</a></li>
-        <li><a href="#">Chatroom</a></li>
+        <li class="menu"><a href="#">Home</a></li>
+        <li class="menu"><a href="#">Destinations</a></li>
+        <li class="menu"><a href="#">Chatroom</a></li>
         <li class="login" id="login"><a href="#" class="fa fa-user"><span id="tooltip">login</span></a></li>
-        <li class="account" id="account"><a href="#">Identifiant</a></li>
+        <li class="account" id="account"><a href="#"></a></li>
         <li class="log-out" id="log-out"><a href="#" class="fas fa-power-off"><span id="tooltip">logout</span></a></li>  
       </ul>
   </nav>
@@ -59,8 +59,11 @@
           </div>
           <div class="collapse-body new-account">
             <form class="form-container" id="signup-form">
+              <input type="text" placeholder="Identifiant" name="username" required>
               <input type="email" placeholder="Email" name="newemail" required>
-              <input class="new-psw" type="password" placeholder="Mot de passe" name="newpsw" required><span class="info fas fa-info-circle"><span class="tooltip-info">Au moins 6 caractères dont un chiffre, une majuscule et une minuscule</span></span>
+              <input class="new-psw" type="password" placeholder="Mot de passe" name="newpsw" required><span class="info fas fa-info-circle">
+                <span class="tooltip-info">Au moins 6 caractères dont un chiffre, une majuscule et une minuscule</span></span>
+              <span class="error" id="signuperr"></span>
               <button type="button" class="btn" id="signupbtn">Créer !</button>
             </form>
           </div>
@@ -73,8 +76,8 @@
             <form class="form-container" id="login-form">
               <input type="email" placeholder="Email" name="email" required>
               <input type="password" placeholder="Mot de passe" name="psw" required>
-              <span class="error">Email ou mot de passe invalide</span>
-              <span class="psw-forget">Mot de passe oublié ?</span>
+              <span class="error" id="signinerr"></span>
+              <!-- <span class="psw-forget">Mot de passe oublié ?</span> -->
               <button type="button" class="btn" id="loginbtn">Go !</button>
             </form>
           </div>
@@ -83,7 +86,10 @@
     </div>
   </div>
 
-    
+  <!-- The actual snackbar -->
+<div id="snackbarLogin"></div>
+
+ <!-- main content -->
   <div class="flex-container">
 
     <div class=aside>
@@ -101,8 +107,8 @@
     <div class="videos-container">
       <div class="video">
         <div class="video-content">
-          <h2>Le Supermarche</h2>
-          <p>Nos débuts à la recherche de supermarchés !</p>
+          <h2>Suite</h2>
+          <p>Les petits mots ! </p>
         </div>
         <div class="iframe-container">
           <iframe src="https://www.youtube.com/embed/ws6RI7jWXJk" class="youtube"></iframe>
@@ -111,20 +117,15 @@
           <a href="#" class="icon fas fa-heart"></a>
           <a href="#" class="icon fas fa-comment"></a>
         </div>
-      </div>
-      <div class="video">
-        <div class="video-content">
-          <h2>Le Depart</h2>
-          <p>Petite video d'introduction : suivez-nous dans notre parcours de Paris à Taichung!</p>
-        </div>
-        <div class="iframe-container">
-          <iframe src="https://www.youtube.com/embed/Ih4u6EFdq2I" class="youtube"></iframe>
-        </div>
-        <div class="icons">
-          <a href="#" class="icon fas fa-heart"></a>
-          <a href="#" class="icon fas fa-comment"></a>
+        <div class="dbinfo">
+          <p class="likes"><span>10</span> J'aime</p>
+          <p class="moreComments">Afficher les <span>8</span> commentaires</p>
+          <p class="comments"><span class="userID">Lea</span><span class="userComment">Super voyage</span></p>
+          <p class="comments"><span class="userID">Malek</span><span class="userComment">ça donne envie de vous rejoindre !</span></p>
         </div>
       </div>
+
+
     </div>
 
   </div>
@@ -136,15 +137,35 @@
   </footer>
 
   <!-- The core Firebase JS SDK is always required and must be listed first -->
-  <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-app.js"></script>
+
   <!-- TODO: Add SDKs for Firebase products that you want to use
-     https://firebase.google.com/docs/web/setup#available-libraries -->
-  <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-analytics.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-firestore.js"></script>
+    https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-analytics.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-firestore.js"></script>
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyCRpXf7TEtzB_IH5E6wSGC4PSW9HEvn8Rc",
+      authDomain: "my-blog-5891e.firebaseapp.com",
+      databaseURL: "https://my-blog-5891e.firebaseio.com",
+      projectId: "my-blog-5891e",
+      storageBucket: "my-blog-5891e.appspot.com",
+      messagingSenderId: "892357552072",
+      appId: "1:892357552072:web:532031bcd32cf9dc2582fd",
+      measurementId: "G-PDYWX2HBXZ"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+  </script>
   <script src="https://kit.fontawesome.com/09376d0a06.js" crossorigin="anonymous"></script>
   <script src="js/weather.js"></script>
   <script src="js/login.js"></script>
+  <script src="js/database.js"></script>
   <script src="js/app.js"></script>
 
 </body>
