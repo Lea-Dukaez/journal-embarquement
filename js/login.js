@@ -17,8 +17,8 @@ const forgetPsw = document.querySelector('.psw-forget');
 const sideNavBurger = document.querySelector('.side-nav-burger');
 
 
-// close - open modal
-// When the user clicks the button
+// close - open modal :
+// When the user clicks the button login => open modal
 iconsLogin.forEach(icon => {
   icon.onclick = () => {
     modal.style.display = "block";
@@ -26,7 +26,7 @@ iconsLogin.forEach(icon => {
   }
 });
 
-// When the user clicks on <span> (x), close the modal
+// When the user clicks on <span> (x) => close the modal
 closeModal.onclick = () => {
   modal.style.display = "none";
   sideNavBurger.style.display = "inline-block";
@@ -39,7 +39,7 @@ closeModal.onclick = () => {
 });
 }
 
-// When the user clicks anywhere outside of the modal, close it
+// When the user clicks anywhere outside of the modal => close it
 window.onmousedown = (event) => {
   if ((event.target === modal)) {
     modal.style.display = "none";
@@ -54,7 +54,7 @@ window.onmousedown = (event) => {
   }
 }
 
-
+// Login / Sign In :
 // Modal-login - accordion
 collapseHeader.forEach((header,index) => {
 
@@ -124,21 +124,22 @@ btnSignup.addEventListener('click', () => {
   const regexpsw = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/ ;
   if(regexpsw.test(newUserPsw)){
     auth.createUserWithEmailAndPassword(newUserEmail, newUserPsw)
-      .then(() => {
-        // update user name
-        const user = firebase.auth().currentUser;
+      .then(cred => {
+        const user = cred.user;
+        // add / update user name
         user.updateProfile({ displayName: `${newUserName}`});
         // reset form and close modal
         btnSignup.parentNode.reset();
         btnSignup.parentNode.parentNode.style.maxHeight = null;
         modal.style.display = "none";
         sideNavBurger.style.display = "inline-block";
-
         // display userName + custom msg
         accountsUser.forEach(name => {
           name.innerHTML = newUserName;
         })
         showLoginMsg(newUserName);
+        //create user in firestore database
+        return db.collection('users').doc(user.uid).set({});
       })
       .catch(err => {
         console.log(err.message);
@@ -222,9 +223,8 @@ iconsLogout.forEach(icon => {
 //   // An error happened.
 // });
 
-
-// Add a realtime listener
-auth.onAuthStateChanged(firebaseUser => {
+// setup UI if login 
+const setupUILogin = (firebaseUser) => {
   if(firebaseUser){
     // avoid over-writing of username by null when user created + login first time
     if(firebaseUser.displayName){
@@ -245,7 +245,7 @@ auth.onAuthStateChanged(firebaseUser => {
     iconsLogin.forEach(icon => {
       icon.style.display = "none";
     });
-  }else{
+  } else {
     // logout icon & account name not visible when not login
     iconsLogout.forEach(icon => {
       icon.style.display = "none";
@@ -259,4 +259,26 @@ auth.onAuthStateChanged(firebaseUser => {
     });
     console.log("not logged in");
   }
+}
+
+// set up LIKES 
+const setupUILikes = (firebaseUser) => {
+  const userLogin = firebaseUser.uid;
+  db.collection('users').doc(userLogin).get().then(element => {
+    console.log(element);
+    console.log(element.data());
+  });
+};
+
+
+  // console.log(firebaseUser.uid);
+  // console.log(likes.data());
+
+
+
+
+// Add a realtime listener
+auth.onAuthStateChanged(firebaseUser => {
+  setupUILogin(firebaseUser);
+  setupUILikes(firebaseUser);
 });

@@ -1,37 +1,59 @@
-// db.collection("videos").add({
-//   title: "Le Supermarche",
-//   intro: "Nos débuts à la recherche de supermarchés !",
-//   date: new Date,
-//   url: "https://www.youtube.com/embed/Ih4u6EFdq2I"
-// })
-// .then(function(docRef) {
-//   console.log("Document written with ID: ", docRef.id);
-// })
-// .catch(function(error) {
-//   console.error("Error adding document: ", error);
-// });
-
 
 const videosContainer = document.querySelector(".videos-container");
 const hearts = document.querySelectorAll(".fa-heart");
 
-// event Listener on LIKES & COMMENTS
+// setup UI for LIKES / DISLIKES
+const videoLiked = (target) => {
+  target.style.setProperty('font-weight', '900', 'important');
+  target.style.color = "rgba(248, 194, 145,0.6)";
+  target.parentNode.nextElementSibling.style.display = "block";
+}
+const videoDisLiked = (target) => {
+  target.style.setProperty('font-weight', '300', 'important');
+  target.style.color = "rgb(51, 51, 51)";
+  target.parentNode.nextElementSibling.style.display = "none";
+}
+
+// event Listener on LIKES
 videosContainer.addEventListener('click', e => {
+  const user = firebase.auth().currentUser;
+  const videoID = e.target.parentNode.parentNode.id;
 
-  console.log(e);
-  console.log(e.target);
-  console.log(e.target.parentNode.parentNode.id);
-  console.log(e.target.parentNode.nextElementSibling);
-
-
-  // LIKES 
   if(e.target.className === "icon fas fa-heart"){
-    e.target.style.setProperty('font-weight', '900', 'important');
-    e.target.style.color = "rgba(248, 194, 145,0.6)";
-    e.target.parentNode.nextElementSibling.style.display = "block";
+    const userRef = db.collection('users').doc(user.uid);
+    userRef.get().then((doc) => {
+      if (doc.exists) {
+        if(doc.data()[videoID]){
+          userRef.update({
+            [videoID]: false
+          }).then(() => {
+            videoDisLiked(e.target);
+            console.log('doc successfull updated ! And video changed from liked to disliked');
+          }).catch((error) => {
+            // The document probably doesn't exist.
+            console.error("Error updating document: ", error);
+          });
+        } else {
+          userRef.update({
+            [videoID]: true
+          }).then(() => {
+            videoLiked(e.target);
+            console.log('doc successfull updated ! And video changed from disliked to liked');
+          }).catch((error) => {
+            // The document probably doesn't exist.
+            console.error("Error updating document: ", error);
+          });
+        }
+      } else {
+          // doc.data() will be undefined in this case
+          console.log("NO existing user!");
+      }
+    }).catch(function(error) {
+      console.log("Error getting document:", error);
+    });
   }
-
 });
+
 
 
 // affichage videos
@@ -54,13 +76,12 @@ const showVideo = (title, intro, url, videoId) => {
       </div>
     </div>
     `;
-
   videosContainer.innerHTML += html;
 };
 
-db.collection("videos").onSnapshot((docs) => {
+db.collection("videos").onSnapshot(docs => {
   docs.forEach((doc) => {
     const data = doc.data();
     showVideo(data.title, data.intro, data.url, doc.id)
   });
-})
+}, err => console.log(err))
