@@ -16,7 +16,6 @@ const forgetPsw = document.querySelector('.psw-forget');
 
 const sideNavBurger = document.querySelector('.side-nav-burger');
 
-
 // close - open modal :
 // When the user clicks the button login => open modal
 iconsLogin.forEach(icon => {
@@ -83,8 +82,6 @@ collapseHeader.forEach((header,index) => {
   });
 });
 
-
-
 // Form sign in / sign up : 
 // Snackbar welcome login msg
 const showLoginMsg = (userName) => {
@@ -104,13 +101,11 @@ const errorMsg = (msg, form) => {
   // Add the "show" class to DIV
   form.innerHTML = `${msg}`;
   form.classList.toggle("showMsg");
-
   // After 3 seconds, remove the show class from span
   setTimeout(() => { 
     form.classList.toggle("showMsg"); 
   }, 3000);
 };
-
 
 // Sign Up form + authentification
 btnSignup.addEventListener('click', () => {
@@ -200,7 +195,6 @@ inputs.forEach(input => {
   });
 });
 
-
 // log out users
 iconsLogout.forEach(icon => {
   icon.addEventListener("click", () => {
@@ -261,21 +255,29 @@ const setupUILogin = (firebaseUser) => {
   }
 }
 
-// set up LIKES 
+// set up the color of LIKES for the login user
 const setupUILikes = (firebaseUser) => {
-  const userLogin = firebaseUser.uid;
-  db.collection('users').doc(userLogin).get().then(element => {
-    console.log(element);
-    console.log(element.data());
-  });
+  if(firebaseUser){
+    const userLogin = firebaseUser.uid;
+    const videosLikedRef = db.collection('users').doc(userLogin).collection('videosliked');
+    videosLikedRef.where("liked", "==", true).get()
+      .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+              const videoHTML = document.getElementById(doc.id);
+              const heartIcon = videoHTML.children[2].firstElementChild;
+              fullHeart(heartIcon);
+          });
+      })
+      .catch(function(error) {
+          console.log("Error getting documents: ", error);
+      });
+  } else {
+    const hearts = document.querySelectorAll(".fa-heart");
+    hearts.forEach(heart => {
+      emptyHeart(heart);
+    })
+  }
 };
-
-
-  // console.log(firebaseUser.uid);
-  // console.log(likes.data());
-
-
-
 
 // Add a realtime listener
 auth.onAuthStateChanged(firebaseUser => {
