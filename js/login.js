@@ -13,6 +13,7 @@ const newAccountPsw = document.querySelector('.new-psw');
 const btnSignup = document.getElementById("signupbtn");
 const btnLogin = document.getElementById("loginbtn");
 const forgetPsw = document.querySelector('.psw-forget');
+const pswBlock = document.getElementById("reset-psw-block");
 
 const sideNavBurger = document.querySelector('.side-nav-burger');
 
@@ -27,9 +28,12 @@ iconsLogin.forEach(icon => {
 
 // When the user clicks on <span> (x) => close the modal
 closeModal.onclick = () => {
+  
   modal.style.display = "none";
   sideNavBurger.style.display = "inline-block";
+  pswBlock.style.display = "none";
   collapseHeader.forEach(header => {
+    header.parentNode.style.display = "block";
     if(header.classList.contains("active")){
       header.classList.toggle("active");
       header.nextElementSibling.firstElementChild.reset()
@@ -43,7 +47,9 @@ window.onmousedown = (event) => {
   if ((event.target === modal)) {
     modal.style.display = "none";
     sideNavBurger.style.display = "inline-block";
+    pswBlock.style.display = "none";
     collapseHeader.forEach(header => {
+      header.parentNode.style.display = "block";
       if(header.classList.contains("active")){
         header.classList.toggle("active");
         header.nextElementSibling.firstElementChild.reset()
@@ -202,20 +208,39 @@ iconsLogout.forEach(icon => {
   });
 });
 
+
 // Password forgotten / reset
-// forgetPsw.addEventListener('click', () => {
-//   console.log('hello');
+forgetPsw.addEventListener('click', () => {
+  
+  collapseHeader.forEach(header => {
+    header.parentNode.style.display = "none";
+  });
+  pswBlock.style.display = "block";
 
-// })
-// var auth = firebase.auth();
-// var emailAddress = "user@example.com";
+  // When the user clicks on <span> (x) => close the reset psw block
+  const closePswBlock = document.getElementById('close-psw');
+  closePswBlock.onclick = () => {
+    pswBlock.style.display = "none";
+    collapseHeader.forEach(header => {
+      header.parentNode.style.display = "block";
+    });
+  }
+});
 
-// auth.sendPasswordResetEmail(emailAddress)
-// .then(function() {
-//   // Email sent.
-// }).catch(function(error) {
-//   // An error happened.
-// });
+resetpswbtn.addEventListener("click", ()=> {
+  emailErrMsg = document.querySelector("#emailerr");
+
+  userEmail = document.querySelector("input[name='emailreset']").value;
+  auth.sendPasswordResetEmail(userEmail).then(() => {
+    console.log("email sent")
+  }).catch(error => {
+    console.log(error.message)
+    const errMsg = "Aucun compte ne correspond à cet email";
+    errorMsg(errMsg, emailErrMsg);
+  });
+});
+
+
 
 // setup UI if login 
 const setupUILogin = (firebaseUser) => {

@@ -77,12 +77,26 @@
               <input type="email" placeholder="Email" name="email" required>
               <input type="password" placeholder="Mot de passe" name="psw" required>
               <span class="error" id="signinerr"></span>
-              <!-- <span class="psw-forget">Mot de passe oublié ?</span> -->
+              <span class="psw-forget">Mot de passe oublié ?</span>
               <button type="button" class="btn" id="loginbtn">Go !</button>
             </form>
           </div>
         </li>
+        <li id="reset-psw-block">
+          <div class="psw-header">
+            <h1>Mot de passe oublie</h1>
+          </divclass="collapse-header">
+          <div class="psw-body">
+            <form class="form-container" id="psw-form">
+              <input type="email" placeholder="Email" name="emailreset" required>
+              <span class="error" id="emailerr"></span>
+              <span id="close-psw">&times;</span>
+              <button type="button" class="btn" id="resetpswbtn">Réinitialisation</button>
+            </form>
+          </div>
+        </li>
       </ul>
+
     </div>
   </div>
 
