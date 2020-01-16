@@ -33,7 +33,6 @@ const updateWeather = (weatherIcon, weatherText, temp ) => {
 };
 
 
-
 getWeather().then(data => {
 
   const weatherIcon = data.WeatherIcon;
@@ -59,3 +58,5 @@ const openSideNav = (element) => {
     sideNavMobile.style.width = "100%";
   }
 }
+
+

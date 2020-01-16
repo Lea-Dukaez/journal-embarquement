@@ -1,3 +1,4 @@
+// API call to get weather
 // const weatherApiKey = "PZtHYWQEYcvnuk932JxdQNWnK3tHxp9n";
 const cityKey = "6-315040_1_AL"; // for Taichung
 
