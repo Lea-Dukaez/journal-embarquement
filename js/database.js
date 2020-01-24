@@ -11,48 +11,69 @@ const emptyHeart = (target) => {
   target.style.color = "rgb(51, 51, 51)";
 }
 
+// Snackbar to invite to login for like
+const showInviteLogin = () => {
+  // Get the snackbar DIV
+  const snackbarInvite = document.getElementById("snackbarInvite");
+  // Add the "show" class to DIV
+  snackbarInvite.classList.toggle("show");
+  // After 3 seconds, remove the show class from DIV
+  setTimeout(() => { 
+    snackbarInvite.classList.toggle("show"); 
+  }, 3000);
+};
+
+
 // event Listener on LIKES
 videosContainer.addEventListener('click', e => {
   const user = firebase.auth().currentUser;
   const videoID = e.target.parentNode.parentNode.id;
   //check if the click is on the icon Heart
   if(e.target.className === "icon fas fa-heart"){
-    const videolikedRef = db.collection('users').doc(user.uid).collection('videosliked').doc(videoID);
-    videolikedRef.get().then(doc => {
-      if(doc.exists) {
-        if(doc.data().liked){ 
-          videolikedRef.update({
-            liked: false
-          }).then(() => {
-            emptyHeart(e.target);
-            console.log('doc successfull updated ! And video changed from liked to disliked');
-          }).catch((error) => {
-            // The document probably doesn't exist.
-            console.error("Error updating document: ", error);
-          });
+
+    // check if user login to be able to like otherwhise show msg to invite to login
+    if(user){
+      const videolikedRef = db.collection('users').doc(user.uid).collection('videosliked').doc(videoID);
+      videolikedRef.get().then(doc => {
+        if(doc.exists) {
+          if(doc.data().liked){ 
+            videolikedRef.update({
+              liked: false
+            }).then(() => {
+              emptyHeart(e.target);
+              console.log('doc successfull updated ! And video changed from liked to disliked');
+            }).catch((error) => {
+              // The document probably doesn't exist.
+              console.error("Error updating document: ", error);
+            });
+          } else {
+            videolikedRef.update({
+              liked: true
+            }).then(() => {
+              fullHeart(e.target);
+              console.log('doc successfull updated ! And video changed from disliked to liked');
+            }).catch((error) => {
+              console.error("Error updating document: ", error);
+            });
+          }
         } else {
-          videolikedRef.update({
+          db.collection('users').doc(user.uid).collection('videosliked').doc(videoID).set({
             liked: true
           }).then(() => {
             fullHeart(e.target);
-            console.log('doc successfull updated ! And video changed from disliked to liked');
-          }).catch((error) => {
-            console.error("Error updating document: ", error);
+            console.log('doc successfull created ! with liked video');
+          }).catch((err) => {
+            console.log(err);
           });
         }
-      } else {
-        db.collection('users').doc(user.uid).collection('videosliked').doc(videoID).set({
-          liked: true
-        }).then(() => {
-          fullHeart(e.target);
-          console.log('doc successfull created ! with liked video');
-        }).catch((err) => {
-          console.log(err);
-        });
-      }
-    }).catch((error) => {
-        console.log("Error getting document:", error);
-    });
+      }).catch((error) => {
+          console.log("Error getting document:", error);
+      });
+
+    } else {
+      showInviteLogin();
+    }
+
   };
 });
 
@@ -95,7 +116,7 @@ const showLikes = (videoID, number) => {
 };
 
 // get the collection videos in database and show on screen
-db.collection("videos").get().then(docs => {
+db.collection("videos").orderBy("created_at", "desc").get().then(docs => {
   docs.forEach((doc) => {
     const data = doc.data();
     showVideo(data.title, data.intro, data.url, doc.id)
@@ -103,7 +124,7 @@ db.collection("videos").get().then(docs => {
 }, err => console.log(err))
 
 // get all changes in likes of videos in database and update on screen
-db.collection("videos").onSnapshot((snapshopt)=> {
+db.collection("videos").orderBy("created_at", "desc").onSnapshot((snapshopt)=> {
   snapshopt.docChanges().forEach((change) => {
     showLikes(change.doc.id, change.doc.data().likes)
   })
