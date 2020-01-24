@@ -3,6 +3,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://kit.fontawesome.com/09376d0a06.js" crossorigin="anonymous"></script>
   <link href="https://fonts.googleapis.com/css?family=Nanum+Myeongjo:400,700,800|Parisienne&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <title>杜莉亞 - 高來福 - blog</title>
@@ -100,8 +101,12 @@
     </div>
   </div>
 
-  <!-- The actual snackbar -->
+  <!-- The welcome msg snackbar -->
 <div id="snackbarLogin"></div>
+
+<!-- The invit for login msg snackbar -->
+<div id="snackbarInvite">Connectez-vous pour liker !</div>
+
 
  <!-- main content -->
   <div class="flex-container">
@@ -174,7 +179,6 @@
     const auth = firebase.auth();
     const db = firebase.firestore();
   </script>
-  <script src="https://kit.fontawesome.com/09376d0a06.js" crossorigin="anonymous"></script>
   <script src="js/weather.js"></script>
   <script src="js/videos.js"></script>
   <script src="js/database.js"></script>
